@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bullet Mayhem</title>
+<style>
+  /* Simple CSS to make the canvas take up the whole window */
+  body, html {
+    height: 80%;
+    margin: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  canvas {
+    border: 3px solid rgb(0, 0, 0);
+  }
+</style>
+</head>
+<body>
+<canvas id="gameCanvas" width="800" height="800"></canvas>
+
+<script>
+  // Your JavaScript code will go here
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+const circle = {
+  x: 100, // starting x-coordinate
+  y: 400, // starting y-coordinate
+  size: 50, // radius of the circle
+  dx: 3, // change in x-coordinate (speed on the x-axis)
+};
+
+function drawCircle() {
+  ctx.beginPath();
+  ctx.arc(circle.x, circle.y, circle.size, 0, Math.PI * 2);
+  ctx.fillStyle = 'red';
+  ctx.fill();
+}
+
+function update() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+
+  drawCircle(); // draw the circle
+
+  // Change the position of the circle
+  circle.y += circle.dx
+
+  // If the circle goes off the right edge of the canvas
+  if (circle.y + circle.size > canvas.width) {
+    circle.y = -circle.size;
+  }
+
+  requestAnimationFrame(update); // Call update before the next frame
+}
+
+update(); // Start the animation
+  
+  // Game logic and rendering code will be added here
+</script>
+</body>
+</html>
