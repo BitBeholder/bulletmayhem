@@ -1,0 +1,23 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#gameArea {
+  position: relative;
+  width: 810px; /* Set the width of the game area */
+  height: 800px; /* Set the height of the game area */
+  background-color: lightseagreen; /* Background color of the game area */
+}
+
+#gameCanvas {
+  display: block; /* Prevent inline spacing */
+  background: rgb(233, 165, 165); /* Set the background of the canvas to white */
+  border: 5px solid #333; /* Border around the game canvas */
+}
