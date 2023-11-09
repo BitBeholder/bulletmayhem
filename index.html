@@ -12,6 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: lightseagreen;
   }
   canvas {
     border: 3px solid rgb(0, 0, 0);
@@ -28,9 +29,9 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 const circle = {
-  x: 100, // starting x-coordinate
+  x: 400, // starting x-coordinate
   y: 400, // starting y-coordinate
-  size: 50, // radius of the circle
+  size: 10, // radius of the circle
   dx: 3, // change in x-coordinate (speed on the x-axis)
 };
 
@@ -61,5 +62,93 @@ update(); // Start the animation
   
   // Game logic and rendering code will be added here
 </script>
+</body>
+</html>
+
+<head>
+    <style>
+      #movableSquare {
+        width: 50px;
+        height: 50px;
+        background-color: rgb(5, 116, 29);
+        position: absolute;
+        top: 60%; /* 60% from the top of the canvas */
+        left: 50%; /* Centered horizontally on the canvas */
+        transform: translate(-50%, -50%); /* Center the square */
+      }
+    </style>
+  </head>
+
+<body>
+
+<div id="movableSquare"></div>
+
+<script>
+  const square = document.getElementById('movableSquare');
+  let xPos = 0;
+  let yPos = 0;
+  let isMoving = false;
+
+  const squareSize = 50; // size of the square
+
+  // Function to move the square
+  function moveSquare(direction) {
+        if (isMoving) {
+          switch (direction) {
+            case 'up':
+              yPos = Math.max(yPos - (2.5 / canvas.clientHeight) * 100, 0); // Ensure yPos doesn't go below 0
+              break;
+            case 'down':
+              yPos = Math.min(yPos + (2.5 / canvas.clientHeight) * 100, 100 - (squareSize / canvas.clientHeight) * 100); // Ensure yPos doesn't go beyond 100%
+              break;
+            case 'left':
+              xPos = Math.max(xPos - (2.5 / canvas.clientWidth) * 100, 0); // Ensure xPos doesn't go below 0
+              break;
+            case 'right':
+              xPos = Math.min(xPos + (2.5 / canvas.clientWidth) * 100, 100 - (squareSize / canvas.clientWidth) * 100); // Ensure xPos doesn't go beyond 100%
+              break;
+    }
+
+    // Update the square's position
+    square.style.left = xPos + '%';
+    square.style.top = yPos + '%';
+
+      // Continue the movement
+      requestAnimationFrame(function () {
+        moveSquare(direction);
+      });
+    }
+  }
+
+  // Event listeners for key presses and releases
+  document.addEventListener('keydown', function (event) {
+    if (!isMoving) {
+      isMoving = true;
+      moveSquare(getDirection(event.key));
+    }
+  });
+
+  document.addEventListener('keyup', function () {
+    isMoving = false;
+  });
+  // Event listener for key presses
+  function getDirection(key) {
+    switch (event.key) {
+      case 'ArrowUp':
+        moveSquare('up');
+        break;
+      case 'ArrowDown':
+        moveSquare('down');
+        break;
+      case 'ArrowLeft':
+        moveSquare('left');
+        break;
+      case 'ArrowRight':
+        moveSquare('right');
+        break;
+    }
+  }
+</script>
+
 </body>
 </html>
