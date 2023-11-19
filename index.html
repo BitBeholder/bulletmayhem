@@ -5,13 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bullet Mayhem</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        #playMusicButton {
+            position: absolute;
+            right: 20px;
+            bottom: 55px; /* Position just below the button */
+            width: 40px;
+            height: 30px; /* Width of the slider */
+        }
+        #volumeControl {
+            position: absolute;
+            right: 15px;
+            bottom: 15px; /* Position just below the button */
+            width: 150px; /* Width of the slider */
+        }
+    </style>
 </head>
 <body>
     <canvas id="gameCanvas" width="1920px" height="1080px"></canvas>
-    <button id="playMusicButton">Play Music</button>
+    <button id="playMusicButton">🎵</button>
     <audio id="backgroundMusic" preload="auto">
-        <source src="/audio/8 Bit Music - _Battle Man_ (Mega Man Style Chiptune).mp3" type="audio/mp3">
+        <source src="audio/battleman.mp3" type="audio/mp3">
     </audio>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
     <script type="module" src="script.js"></script>
 </body>
 </html>

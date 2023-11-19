@@ -9,22 +9,32 @@ document.addEventListener('DOMContentLoaded', function () {
     const ctx = canvas.getContext('2d');
     const backgroundMusic = document.getElementById('backgroundMusic');
     const playMusicButton = document.getElementById('playMusicButton');
+    const volumeControl = document.getElementById('volumeControl');
     
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    function playMusic() {
-        backgroundMusic.play().then(() => {
-            console.log("Background music started.");
-            // Optionally, hide the button after starting the music
-            playMusicButton.style.display = 'none';
-        }).catch(error => {
-            console.error("Error playing background music:", error);
-        });
+    function toggleMusic() {
+        // Check if the music is currently playing
+        if (backgroundMusic.paused) {
+            backgroundMusic.play().then(() => {
+                console.log("Background music started.");
+            }).catch(error => {
+                console.error("Error playing background music:", error);
+            });
+        } else {
+            backgroundMusic.pause();
+            console.log("Background music paused.");
+        }
     }
+    
+    // Attach the toggleMusic function to the play music button
+    playMusicButton.addEventListener('click', toggleMusic);
 
-    // Event listener for the play music button
-    playMusicButton.addEventListener('click', playMusic);
+    volumeControl.addEventListener('input', function() {
+        backgroundMusic.volume = this.value;
+    });
+    
 
     let enemies = [];
     let colors = [
