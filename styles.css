@@ -21,3 +21,10 @@ body, html {
   src: url('fonts/font3.woff') format('woff');
   /* Include other formats like TTF as needed */
 }
+
+#playMusicButton {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  /* additional styling as per your game's theme */
+}

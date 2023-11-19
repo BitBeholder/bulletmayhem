@@ -32,10 +32,9 @@ class Player {
     collisioncheck() {
         if (this.x < 50) {
             this.x = 50;
-        } else if (this.x > this.canvasWidth) {
-            this.x = this.canvasWidth - 50;
-        } else if (this.x + this.width > this.canvasWidth) {
-            this.x = this.canvasWidth - 50;
+        } 
+        else if (this.x + this.width > (this.canvasWidth - 50)) {
+            this.x = this.canvasWidth - (this.width + 50);
         }
         if (this.y < 135) {
             this.y = 135;

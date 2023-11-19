@@ -2,22 +2,29 @@ import Enemy from './enemy.js';
 import Player from './player.js';
 import Score from './score.js';
 
-document.addEventListener('DOMContentLoaded', function () {
-    const backgroundMusic = document.getElementById('backgroundMusic');
-    backgroundMusic.play();
-});
-
-
 const score = new Score();
 
 document.addEventListener('DOMContentLoaded', function () {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const backgroundMusic = document.getElementById('backgroundMusic');
-    backgroundMusic.play();
+    const playMusicButton = document.getElementById('playMusicButton');
+    
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
+    function playMusic() {
+        backgroundMusic.play().then(() => {
+            console.log("Background music started.");
+            // Optionally, hide the button after starting the music
+            playMusicButton.style.display = 'none';
+        }).catch(error => {
+            console.error("Error playing background music:", error);
+        });
+    }
+
+    // Event listener for the play music button
+    playMusicButton.addEventListener('click', playMusic);
 
     let enemies = [];
     let colors = [
@@ -68,7 +75,7 @@ function startGame() {
 const progressBar = {
     width: 500,
     height: 15,
-    color: 'lightgreen',
+    color: 'red',
     duration: 10
  }
 
