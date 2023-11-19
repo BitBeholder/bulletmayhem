@@ -54,7 +54,7 @@ class Enemy {
             this.y + this.height,
             10,
             10,
-            'white',
+            'green',
             1
         );
 

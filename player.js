@@ -1,5 +1,5 @@
 class Player {
-    constructor(x, y, width, height, color, speed, canvasWidth) {
+    constructor(x, y, width, height, color, speed, canvasWidth, canvasHeight) {
         this.x = x;
         this.y = y;
         this.width = width; 
@@ -7,7 +7,9 @@ class Player {
         this.color = color;
         this.speed = speed;
         this.dx = 0;
+        this.dy = 0;
         this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
     }
 
     // Controller for player movement
@@ -16,7 +18,7 @@ class Player {
         this.dx = -this.speed;
        else if (direction === 'right')
         this.dx = +this.speed;
-        else if (direction === 'up')
+        if (direction === 'up')
         this.dy = -this.speed;
         else if (direction === 'down')
         this.dy = this.speed;
@@ -28,17 +30,24 @@ class Player {
     }
 
     collisioncheck() {
-        if  (this.x < 0) {
+        if (this.x < 0) {
         this.x = 0;
         }
         else if (this.x + this.width > this.canvasWidth) {
         this.x = this.canvasWidth - this.width;
+        }
+        if (this.y < 0) {
+        this.y = 0;
+        }
+        else if (this.y + this.height > this.canvasHeight) {
+        this.y = this.canvasHeight - this.height;
         }
     }
 
     playerupdate() {
         this.collisioncheck();
         this.x += this.dx;
+        this.y += this.dy;
     }
 }
 export default Player;

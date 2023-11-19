@@ -1,11 +1,13 @@
 import Enemy from './enemy.js';
 import Player from './player.js';
 
+
 document.addEventListener('DOMContentLoaded', function () {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    
 
  let enemies = [];
  let colors = [
@@ -20,9 +22,8 @@ document.addEventListener('DOMContentLoaded', function () {
     "#E74C3C", // Lively Red
     "#34495E"  // Dark Slate Grey
 ];
- let enemyamount = 7;
- let player = new Player(canvas.width / 2 - 25, 800, 50, 50, '#006475', 2.5, 1920)
- 
+ let enemyamount = 20;
+ let player = new Player(canvas.width / 2 - 25, canvas.height / 1.2, 50, 50, '#006475', 3, canvas.width, canvas.height)
 
  for (let i = 0; i < enemyamount; i++) {
     let x = Math.random() * canvas.width;
@@ -35,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
     enemies.push(enemy);
  }
 
+
 function checkCollision(player, bullet) {
     return player.x < bullet.x + bullet.width &&
            player.x + player.width > bullet.x &&
@@ -45,18 +47,11 @@ function checkCollision(player, bullet) {
 function resetGame() {
     // Reset player position
     player.x = canvas.width / 2 - player.width / 2;
-    player.y = canvas.height - player.height - 10; // Or any starting position you prefer
+    player.y = canvas.height / 1.2; // Or any starting position you prefer
 
-    // Clear existing bullets and reset enemy positions if needed
     enemies.forEach(enemy => {
         enemy.bullets = [];
-        // Reset enemy position if necessary
-        // enemy.x = ...;
-        // enemy.y = ...;
     });
-
-    // If you have any other game state to reset, do it here
-
     // Restart the game loop
     update();
 }
@@ -71,37 +66,39 @@ function update() {
         enemies[i].update();
         enemies[i].draw(ctx);
         enemies[i].updateAndDrawBullets(ctx);
-
         enemies[i].bullets.forEach(bullet => {
             if (checkCollision(player, bullet)) {
                 collisionDetected = true;
             }
         });
     }
-
     if (collisionDetected) {
         resetGame();
         return;
     }
-
     requestAnimationFrame(update);
 }
 
 function keyDown(e) {
-    if (e.key === 'ArrowRight' || e.key === 'Right') {
+    if (e.key === 'ArrowRight' || e.key === 'Right' || e.key === 'd') {
         player.move('right');
-    } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
+    } else if (e.key === 'ArrowLeft' || e.key === 'Left' || e.key === 'a') {
         player.move('left');
+    } if (e.key === 'ArrowUp' || e.key === 'Up' || e.key === 'w') {
+        player.move('up');
+    } else if (e.key === 'ArrowDown' || e.key === 'Down' || e.key === 's') {
+        player.move('down');
     }
 }
 
 function keyUp(e) {
-    if (e.key == 'Right' ||
-        e.key == 'ArrowRight' ||
-        e.key == 'Left' ||
-        e.key == 'ArrowLeft') 
-        {
+    if (e.key === 'Right' || e.key === 'ArrowRight' || e.key === 'Left' || e.key === 'ArrowLeft' ||
+        e.key === 'd' || e.key === 'a') {
         player.dx = 0;
+    }
+    if (e.key === 'Up' || e.key === 'ArrowUp' || e.key === 'Down' || e.key === 'ArrowDown' ||
+        e.key === 'w' || e.key === 's') {
+        player.dy = 0;
     }
 }
 

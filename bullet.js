@@ -5,7 +5,7 @@ class Bullet {
       this.width = width;
       this.height = height;
       this.color = color;
-      this.speed = speed;
+      this.speed = Math.random()*2+2;;
   }
 
   // Update bullet position
@@ -19,6 +19,5 @@ class Bullet {
       context.fillStyle = this.color;
       context.fillRect(this.x, this.y, this.width, this.height);
   }
-  
 }
 export default Bullet;
