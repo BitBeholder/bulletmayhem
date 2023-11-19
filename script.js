@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
       pressed: false
     }
  }
+ let lastKey
 
  let enemyamount = 0;
  let player = new Player(canvas.width / 2 - 25, canvas.height / 1.2, 50, 50, '#006475', 3, canvas.width, canvas.height)
@@ -110,6 +111,10 @@ function update() {
                 collisionDetected = true;
             }
         });
+        
+        if (keys.a.pressed) {
+            player.move('left');
+        }
     }
     if (collisionDetected) {
         resetGame();
@@ -118,17 +123,9 @@ function update() {
     requestAnimationFrame(update);
 }
 
-function keyDown(e) {
-    if (e.key === 'ArrowRight' || e.key === 'Right' || e.key === 'd') {
-        player.move('right');
-    } else if (e.key === 'ArrowLeft' || e.key === 'Left' || e.key === 'a') {
-        player.move('left');
-    } if (e.key === 'ArrowUp' || e.key === 'Up' || e.key === 'w') {
-        player.move('up');
-    } else if (e.key === 'ArrowDown' || e.key === 'Down' || e.key === 's') {
-        player.move('down');
-    }
-}
+window.addEventListener('keydown', (event) => {
+    switch ()
+})
 
 function keyUp(e) {
     if (e.key === 'Right' || e.key === 'ArrowRight' || e.key === 'Left' || e.key === 'ArrowLeft' ||
@@ -140,10 +137,6 @@ function keyUp(e) {
         player.dy = 0;
     }
 }
-
-// Set up event listeners for key presses
-document.addEventListener('keydown', keyDown);
-document.addEventListener('keyup', keyUp);
 
 startGame();
 update(); // Start the loop
