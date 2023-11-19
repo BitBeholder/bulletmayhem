@@ -22,8 +22,26 @@ document.addEventListener('DOMContentLoaded', function () {
     "#E74C3C", // Lively Red
     "#34495E"  // Dark Slate Grey
 ];
- let enemyamount = 20;
+
+ const progressBar = {
+    width: innerWidth,
+    height: 20,
+    color: 'lightgreen',
+    duration: 30
+ }
+
+ const keys = {
+    a: {
+      pressed: false
+    },
+    d: {
+      pressed: false
+    }
+ }
+
+ let enemyamount = 0;
  let player = new Player(canvas.width / 2 - 25, canvas.height / 1.2, 50, 50, '#006475', 3, canvas.width, canvas.height)
+
 
  for (let i = 0; i < enemyamount; i++) {
     let x = Math.random() * canvas.width;
@@ -36,6 +54,24 @@ document.addEventListener('DOMContentLoaded', function () {
     enemies.push(enemy);
  }
 
+// Timer here:
+let elapsedTime = 0;
+let timerInterval;
+
+function startGame() {
+    elapsedTime = 0;
+    timerInterval = setInterval(() => {
+        elapsedTime++;
+        updateTimerDisplay();
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    let progress = (elapsedTime % progressBar.duration) / progressBar.duration;
+
+    ctx.fillStyle = progressBar.color;
+    ctx.fillRect(0, 910, progress * progressBar.width, progressBar.height);
+}
 
 function checkCollision(player, bullet) {
     return player.x < bullet.x + bullet.width &&
@@ -45,6 +81,8 @@ function checkCollision(player, bullet) {
 }
 
 function resetGame() {
+    clearInterval(timerInterval);
+    startGame();
     // Reset player position
     player.x = canvas.width / 2 - player.width / 2;
     player.y = canvas.height / 1.2; // Or any starting position you prefer
@@ -59,6 +97,7 @@ function resetGame() {
   // Update the canvas and player position
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    updateTimerDisplay();
     player.playerupdate();
     player.draw(ctx);
     let collisionDetected = false;
@@ -106,6 +145,7 @@ function keyUp(e) {
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
 
+startGame();
 update(); // Start the loop
 
 window.addEventListener('resize', function() {
