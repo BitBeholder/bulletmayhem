@@ -43,6 +43,7 @@ class Player {
         }
     }
     
+    
     playerupdate() {
         this.collisioncheck();
         if (this.dx !== 0 && this.dy !== 0) {
