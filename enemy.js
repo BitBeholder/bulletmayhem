@@ -54,7 +54,7 @@ class Enemy {
             this.y + this.height,
             10,
             10,
-            'green',
+            'white',
             1
         );
 
@@ -84,6 +84,6 @@ class Enemy {
             this.bullets[i].draw(context);
         }
     }
-
 } 
+
 export default Enemy;

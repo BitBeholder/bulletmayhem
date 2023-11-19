@@ -1,34 +1,37 @@
 import Enemy from './enemy.js';
 import Player from './player.js';
+import Score from './score.js';
 
+document.addEventListener('DOMContentLoaded', function () {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    backgroundMusic.play();
+});
+
+
+const score = new Score();
 
 document.addEventListener('DOMContentLoaded', function () {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    backgroundMusic.play();
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
 
- let enemies = [];
- let colors = [
-    "#FF5733", // Vivid Tangelo
-    "#7D3C98", // Rich Purple
-    "#F4D03F", // Indocile Yellow
-    "#1ABC9C", // Strong Cyan
-    "#3498DB", // Royal Blue
-    "#F1948A", // Charming Pink
-    "#27AE60", // Fresh Green
-    "#9B59B6", // Amiable Violet
-    "#E74C3C", // Lively Red
-    "#34495E"  // Dark Slate Grey
+    let enemies = [];
+    let colors = [
+        "#FF5733", // Vivid Tangelo
+        "#7D3C98", // Rich Purple
+        "#F4D03F", // Indocile Yellow
+        "#1ABC9C", // Strong Cyan
+        "#3498DB", // Royal Blue
+        "#F1948A", // Charming Pink
+        "#27AE60", // Fresh Green
+        "#9B59B6", // Amiable Violet
+        "#E74C3C", // Lively Red
+        "#34495E"  // Dark Slate Grey
 ];
-
- const progressBar = {
-    width: innerWidth,
-    height: 20,
-    color: 'lightgreen',
-    duration: 30
- }
 
  const keys = {
     a: {
@@ -44,22 +47,11 @@ document.addEventListener('DOMContentLoaded', function () {
       pressed: false
     }
 }
- let lastKey
+let lastKey
+let progress = 0;
 
- let enemyamount = 0;
- let player = new Player(canvas.width / 2 - 25, canvas.height / 1.2, 50, 50, '#006475', 3, canvas.width, canvas.height)
+let player = new Player(canvas.width / 2 - 25, canvas.height / 1.2, 35, 35, '#006475', 3, canvas.width, canvas.height)
 
-
- for (let i = 0; i < enemyamount; i++) {
-    let x = Math.random() * canvas.width;
-    let y = Math.random() * 70;
-    let width = 50;
-    let height = 50;
-    let color = colors[Math.floor(Math.random() * colors.length)];
-    let randomspeed = Math.random()*3+1;
-    let enemy = new Enemy(x, y, width, height, color, randomspeed, canvas.width)
-    enemies.push(enemy);
- }
 
 // Timer here:
 let elapsedTime = 0;
@@ -73,12 +65,40 @@ function startGame() {
     }, 1000);
 }
 
+const progressBar = {
+    width: 500,
+    height: 15,
+    color: 'lightgreen',
+    duration: 10
+ }
+
+let scoreIncremented = false;
+
 function updateTimerDisplay() {
-    let progress = (elapsedTime % progressBar.duration) / progressBar.duration;
+    progress = (elapsedTime % progressBar.duration) / progressBar.duration;
+    const barWidth = 500; // Adjust the width of the progress bar as needed
+    const barHeight = 15; // Set the height relative to the window height
+    const startX = window.innerWidth * 0.02; // Set the horizontal position as a percentage of the window width
+    const startY = window.innerHeight - 60; // Position it at the bottom of the canvas
+
+    ctx.fillStyle = 'rgba(255, 0, 0, 0.25)';
+    ctx.fillRect(startX, startY, progressBar.width - 50, barHeight);
 
     ctx.fillStyle = progressBar.color;
-    ctx.fillRect(0, 910, progress * progressBar.width, progressBar.height);
+    ctx.fillRect(startX, startY, progress * barWidth, barHeight);
+
+    if (progress >= 0.9 && !scoreIncremented) {
+        // Progress reached 90% or more, increment the current score
+        score.updateCurrentScore();
+        scoreIncremented = true;
+    }
+
+    if (progress < 0.9) {
+        // Reset the scoreIncremented flag when progress goes below 90%
+        scoreIncremented = false;
+    }
 }
+
 
 function checkCollision(player, bullet) {
     return player.x < bullet.x + bullet.width &&
@@ -94,17 +114,48 @@ function resetGame() {
     player.x = canvas.width / 2 - player.width / 2;
     player.y = canvas.height / 1.2; // Or any starting position you prefer
 
-    enemies.forEach(enemy => {
-        enemy.bullets = [];
-    });
+    enemies = [];
     // Restart the game loop
+    enemiesAdded = false;
+    
+    score.updateBestScore();
+    score.currentScore = 0;
+
     update();
+}
+
+let playerScore = 0;
+
+let enemiesAdded = false; // Add this variable outside the function
+
+function addMoreEnemies() {
+    if (progress === 0 && !enemiesAdded) {
+        // Calculate how many additional enemies to create
+        const additionalEnemies = 3;
+
+        for (let i = 0; i < additionalEnemies; i++) {
+            let x = Math.random() * canvas.width;
+            let y = Math.random() * 70;
+            let width = 50;
+            let height = 50;
+            let color = colors[Math.floor(Math.random() * colors.length)];
+            let randomspeed = Math.random() * 3 + 1;
+            let enemy = new Enemy(x, y, width, height, color, randomspeed, canvas.width);
+            enemies.push(enemy);
+        }
+
+        enemiesAdded = true; // Set the flag to true once enemies are added
+
+    } else if (progress > 0.8) {
+        enemiesAdded = false; // Reset the flag when progress goes below 0.5
+    }
 }
 
   // Update the canvas and player position
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     updateTimerDisplay();
+    addMoreEnemies();
     player.playerupdate();
     player.draw(ctx);
     let collisionDetected = false;
@@ -122,14 +173,16 @@ function update() {
     player.dx = 0
     player.dy = 0
 
-    if (keys.a.pressed && lastKey === 'a') {
+    if (keys.a.pressed && (lastKey === 'a' || lastKey === 'w' || lastKey === 's')) {
         player.move('left');
-    } else if (keys.d.pressed && lastKey === 'd') {
+    } else if (keys.d.pressed && (lastKey === 'd' || lastKey === 'w' || lastKey === 's')) {
         player.move('right');
     }
-    if (keys.w.pressed && lastKey === 'w') {
+
+    // Handle vertical movement
+    if (keys.w.pressed && (lastKey === 'w' || lastKey === 'a' || lastKey === 'd')) {
         player.move('up');
-    } else if (keys.s.pressed && lastKey === 's') {
+    } else if (keys.s.pressed && (lastKey === 's' || lastKey === 'a' || lastKey === 'd')) {
         player.move('down');
     }
     
@@ -137,6 +190,8 @@ function update() {
         resetGame();
         return;
     }
+    score.displayScores(ctx, playerScore);
+
     requestAnimationFrame(update);
 }
 
@@ -181,10 +236,13 @@ window.addEventListener('keyup', (event) => {
 startGame();
 update(); // Start the loop
 
+
 window.addEventListener('resize', function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     // Re-render or adjust game elements as needed
     // For example, you might need to update positions or redraw objects
+
 });
 });
+

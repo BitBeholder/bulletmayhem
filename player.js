@@ -14,7 +14,6 @@ class Player {
 
     // Controller for player movement
     move(direction) {
-        console.log(direction);
         if (direction === 'left')
             this.dx = -this.speed;
         else if (direction === 'right')
@@ -31,22 +30,30 @@ class Player {
     }
 
     collisioncheck() {
-        if (this.x < 0) {
-        this.x = 0;
+        if (this.x < 50) {
+            this.x = 50;
+        } else if (this.x > this.canvasWidth) {
+            this.x = this.canvasWidth - 50;
+        } else if (this.x + this.width > this.canvasWidth) {
+            this.x = this.canvasWidth - 50;
         }
-        else if (this.x + this.width > this.canvasWidth) {
-        this.x = this.canvasWidth - this.width;
-        }
-        if (this.y < 0) {
-        this.y = 0;
-        }
-        else if (this.y + this.height > this.canvasHeight) {
-        this.y = this.canvasHeight - this.height;
+        if (this.y < 135) {
+            this.y = 135;
+        } else if (this.y + this.height > this.canvasHeight) {
+            this.y = this.canvasHeight - this.height;
         }
     }
-
+    
     playerupdate() {
         this.collisioncheck();
+        if (this.dx !== 0 && this.dy !== 0) {
+            // Normalize speed for diagonal movement
+            const diagonalSpeedFactor = 1 / Math.sqrt(2);
+            this.dx *= diagonalSpeedFactor;
+            this.dy *= diagonalSpeedFactor;
+        }
+
+        // Update position
         this.x += this.dx;
         this.y += this.dy;
     }
