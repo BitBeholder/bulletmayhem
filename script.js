@@ -36,8 +36,14 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     d: {
       pressed: false
+    },
+    w: {
+      pressed: false
+    },
+    s: {
+      pressed: false
     }
- }
+}
  let lastKey
 
  let enemyamount = 0;
@@ -111,11 +117,22 @@ function update() {
                 collisionDetected = true;
             }
         });
-        
-        if (keys.a.pressed) {
-            player.move('left');
-        }
     }
+
+    player.dx = 0
+    player.dy = 0
+
+    if (keys.a.pressed && lastKey === 'a') {
+        player.move('left');
+    } else if (keys.d.pressed && lastKey === 'd') {
+        player.move('right');
+    }
+    if (keys.w.pressed && lastKey === 'w') {
+        player.move('up');
+    } else if (keys.s.pressed && lastKey === 's') {
+        player.move('down');
+    }
+    
     if (collisionDetected) {
         resetGame();
         return;
@@ -124,19 +141,42 @@ function update() {
 }
 
 window.addEventListener('keydown', (event) => {
-    switch ()
+    switch (event.key) {
+    case 'd':
+        keys.d.pressed = true
+        lastKey = 'd'
+        break
+    case 'a':
+        keys.a.pressed = true
+        lastKey = 'a'
+        break
+    case 'w':
+        keys.w.pressed = true
+        lastKey = 'w'
+        break
+    case 's':
+        keys.s.pressed = true
+        lastKey = 's'
+        break
+    }
 })
 
-function keyUp(e) {
-    if (e.key === 'Right' || e.key === 'ArrowRight' || e.key === 'Left' || e.key === 'ArrowLeft' ||
-        e.key === 'd' || e.key === 'a') {
-        player.dx = 0;
-    }
-    if (e.key === 'Up' || e.key === 'ArrowUp' || e.key === 'Down' || e.key === 'ArrowDown' ||
-        e.key === 'w' || e.key === 's') {
-        player.dy = 0;
-    }
-}
+window.addEventListener('keyup', (event) => {
+    switch (event.key) {
+        case 'd':
+            keys.d.pressed = false
+            break
+        case 'a':
+            keys.a.pressed = false
+            break
+        case 'w':
+            keys.w.pressed = false
+            break
+        case 's':
+            keys.s.pressed = false
+            break
+        }
+})
 
 startGame();
 update(); // Start the loop

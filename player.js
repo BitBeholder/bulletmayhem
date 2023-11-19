@@ -14,14 +14,15 @@ class Player {
 
     // Controller for player movement
     move(direction) {
-       if (direction === 'left')
-        this.dx = -this.speed;
-       else if (direction === 'right')
-        this.dx = +this.speed;
+        console.log(direction);
+        if (direction === 'left')
+            this.dx = -this.speed;
+        else if (direction === 'right')
+            this.dx = +this.speed;
         if (direction === 'up')
-        this.dy = -this.speed;
+            this.dy = -this.speed;
         else if (direction === 'down')
-        this.dy = this.speed;
+            this.dy = this.speed;
     }
 
     draw(ctx) {
