@@ -6,18 +6,13 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-}
-
-#gameArea {
-  position: relative;
-  width: 810px; /* Set the width of the game area */
-  height: 800px; /* Set the height of the game area */
-  background-color: lightseagreen; /* Background color of the game area */
+  width: 100%;
+  height: 100%;
 }
 
 #gameCanvas {
   display: block; /* Prevent inline spacing */
-  background: rgb(233, 165, 165); /* Set the background of the canvas to white */
-  border: 5px solid #333; /* Border around the game canvas */
+  background: url('https://giphy.com/gifs/wearenorthwood-space-stars-JrZHAQT0CxmkPWj9LZ') no-repeat center fixed;
+  width: 100%;
+  height: 100%;
 }
