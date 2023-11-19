@@ -261,5 +261,46 @@ window.addEventListener('resize', function() {
     // For example, you might need to update positions or redraw objects
 
 });
+
+
+
+
+
+// MOBILE PHONE:
+
+
+canvas.addEventListener('touchstart', handleTouchStart, false);
+canvas.addEventListener('touchmove', handleTouchMove, false);
+canvas.addEventListener('touchend', handleTouchEnd, false);
+
+function getTouchPos(canvasDom, touchEvent) {
+    var rect = canvasDom.getBoundingClientRect();
+    return {
+        x: touchEvent.touches[0].clientX - rect.left,
+        y: touchEvent.touches[0].clientY - rect.top
+    };
+}
+
+function handleTouchStart(event) {
+    event.preventDefault();
+    let touchPos = getTouchPos(canvas, event);
+    // You might want to initiate player movement here
+}
+
+function handleTouchMove(event) {
+    event.preventDefault();
+    let touchPos = getTouchPos(canvas, event);
+    // Move your player to touchPos.x and touchPos.y
+    player.x = touchPos.x;
+    player.y = touchPos.y;
+}
+
+function handleTouchEnd(event) {
+    event.preventDefault();
+    // You might want to stop player movement here
+}
+
+
+
 });
 
