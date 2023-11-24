@@ -5,7 +5,7 @@ class Bullet {
       this.width = width;
       this.height = height;
       this.color = color;
-      this.speed = Math.random()*2+2;;
+      this.speed = Math.random()*2+2;
   }
 
   // Update bullet position

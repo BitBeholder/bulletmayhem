@@ -1,6 +1,7 @@
 import Enemy from './enemy.js';
 import Player from './player.js';
 import Score from './score.js';
+import Sprite from './sprite.js';
 
 const score = new Score();
 
@@ -34,7 +35,15 @@ document.addEventListener('DOMContentLoaded', function () {
     volumeControl.addEventListener('input', function() {
         backgroundMusic.volume = this.value;
     });
-    
+
+    const background = new Sprite({
+        position: {
+            x: 0,
+            y: 0
+        },
+        imageSrc: './assets/brain background.png',
+        scale: 1.31
+    });
 
     let enemies = [];
     let colors = [
@@ -48,22 +57,23 @@ document.addEventListener('DOMContentLoaded', function () {
         "#9B59B6", // Amiable Violet
         "#E74C3C", // Lively Red
         "#34495E"  // Dark Slate Grey
-];
+    ];
 
- const keys = {
+    const keys = {
     a: {
-      pressed: false
+    pressed: false
     },
     d: {
-      pressed: false
+    pressed: false
     },
     w: {
-      pressed: false
+    pressed: false
     },
     s: {
-      pressed: false
+    pressed: false
     }
-}
+};
+
 let lastKey
 let progress = 0;
 
@@ -95,8 +105,8 @@ function updateTimerDisplay() {
     progress = (elapsedTime % progressBar.duration) / progressBar.duration;
     const barWidth = 500; // Adjust the width of the progress bar as needed
     const barHeight = 15; // Set the height relative to the window height
-    const startX = window.innerWidth * 0.02; // Set the horizontal position as a percentage of the window width
-    const startY = window.innerHeight - 60; // Position it at the bottom of the canvas
+    const startX = canvas.width * 0.02; // Set the horizontal position as a percentage of the window width
+    const startY = canvas.height * 0.94; // Position it at the bottom of the canvas
 
     ctx.fillStyle = 'rgba(255, 0, 0, 0.25)';
     ctx.fillRect(startX, startY, progressBar.width - 50, barHeight);
@@ -171,6 +181,7 @@ function addMoreEnemies() {
   // Update the canvas and player position
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    background.update(ctx);
     updateTimerDisplay();
     addMoreEnemies();
     player.playerupdate();
@@ -251,31 +262,7 @@ window.addEventListener('keyup', (event) => {
 })
 
 startGame();
-update(); // Start the loop
-
-
-window.addEventListener('resize', function() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    // Re-render or adjust game elements as needed
-    // For example, you might need to update positions or redraw objects
-
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+update()
 
 // MOBILE PHONE:
 
@@ -314,4 +301,3 @@ function handleTouchEnd(event) {
 
 
 });
-

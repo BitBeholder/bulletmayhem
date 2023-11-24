@@ -19,7 +19,7 @@ class Score {
   displayScores(ctx) {
       // Draw the current and best scores on the canvas
       ctx.fillStyle = 'white';
-      ctx.font = '20px Arial';
+      ctx.font = '30px Arial';
       ctx.fillText(`Current Level: ${this.currentScore}`, 20, 40);
       ctx.fillText(`Best Score: ${this.bestScore}`, 20, 70);
   }
