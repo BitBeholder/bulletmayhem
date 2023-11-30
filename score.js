@@ -21,7 +21,7 @@ class Score {
       ctx.fillStyle = 'white';
       ctx.font = '30px Arial';
       ctx.fillText(`Current Level: ${this.currentScore}`, 20, 40);
-      ctx.fillText(`Best Score: ${this.bestScore}`, 20, 70);
+      ctx.fillText(`Highscore: ${this.bestScore}`, 20, 70);
   }
 
   drawsScoreBoard() {
