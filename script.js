@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             y: 0
         },
         imageSrc: './assets/brain background.png',
-        scale: 1.31
+        scale: 1
     });
 
     let enemies = [];
